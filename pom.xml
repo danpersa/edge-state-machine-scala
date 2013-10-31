@@ -16,11 +16,17 @@
     <dependencies>
         <!-- specs2 version I used : 1.12.3-->
         <!--<dependency>-->
-            <!--<groupId>org.specs2</groupId>-->
-            <!--<artifactId>specs2_${scala.version}</artifactId>-->
-            <!--<version>${specs2.version}</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>org.specs2</groupId>-->
+        <!--<artifactId>specs2_${scala.version}</artifactId>-->
+        <!--<version>${specs2.version}</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>org.specs2</groupId>
+            <artifactId>specs2_2.10</artifactId>
+            <version>2.3.1</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -78,6 +84,19 @@
                     </jvmArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <argLine>-Xmx512m</argLine>
+                    <includes>
+                        <include>**/*Unit.java</include>
+                        <include>**/*Spec.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -97,4 +116,23 @@
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </pluginRepository>
     </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-releases</id>
+            <name>releases</name>
+            <url>http://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+
+        <repository>
+            <id>oss.sonatype.org-snapshots</id>
+            <name>snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+
+        <repository>
+            <id>central</id>
+            <name>Maven repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+    </repositories>
 </project>
