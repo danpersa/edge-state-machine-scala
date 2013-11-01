@@ -1,0 +1,49 @@
+= Edge State Machine
+
+== State Machine Examples
+
+=== User State Machine
+
+  class User(var state: State = State("pending")) extends AbstractStateMachine {
+    state("pending")
+    state("active")
+    state("blocked")
+
+    event("activate")  {
+      transition(_, from = Set("pending", "blocked"), to = "active", doActivate)
+    }
+
+    event("block") {
+      transition(_, from = Set("active"), to = "blocked", doBlock)
+    }
+
+    def doBlock = println("do_block")
+
+    def doActivate = println("do_activate")
+  }
+
+=== Dice State Machine
+
+  object DiceStates {
+    val states: List[String] = List("one", "two", "three", "four", "five", "six")
+    val statesSet: Set[String] = states.to[Set]
+  }
+
+  class Dice(var state: State = State("one")) extends AbstractStateMachine {
+    state("one")
+    state("two")
+    state("three")
+    state("four")
+    state("five")
+    state("six")
+
+    event("roll") {
+      transition(_, from = DiceStates.statesSet,
+        to = DiceStates.statesSet,
+        guard = rollResult,
+        onTransition = displayDiceRollingAnimation)
+    }
+
+    def rollResult = { State(DiceStates.states(Random.nextInt(6))) }
+    def displayDiceRollingAnimation = println(print(s"--------------- DICE: throw: $state ------------"))
+  }
