@@ -4,6 +4,8 @@
 
 === User State Machine
 
+==== Define
+
   class User(var state: State = State("pending")) extends AbstractStateMachine {
     state("pending")
     state("active")
@@ -21,8 +23,21 @@
 
     def doActivate = println("do_activate")
   }
+  
+==== Use
+
+  val user = new User()
+  // user.state must beEqualTo(State("pending"))
+  user activate()
+  // user.state must beEqualTo(State("active"))
+  user block()
+  // user.state must beEqualTo(State("blocked"))
+  user activate()
+  // user.state must beEqualTo(State("active"))
 
 === Dice State Machine
+
+==== Define
 
   object DiceStates {
     val states: List[String] = List("one", "two", "three", "four", "five", "six")
@@ -47,3 +62,9 @@
     def rollResult = { State(DiceStates.states(Random.nextInt(6))) }
     def displayDiceRollingAnimation = println(print(s"--------------- DICE: throw: $state ------------"))
   }
+  
+==== Use
+
+  val dice = new Dice()
+  dice.roll()
+  // dice.state.name must(beOneOf("one", "two", "three", "four", "five", "six"))
